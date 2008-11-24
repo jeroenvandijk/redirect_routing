@@ -18,11 +18,13 @@ class RedirectRoutingTest < Test::Unit::TestCase
         map.redirect '', :controller => 'events'
         map.redirect 'test', 'http://pinds.com'
         map.redirect 'oldurl', 'newurl', :permanent => true
+				map.redirect 'oldurl/:id', 'newurl', :permanent => true
       end
       
       assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => [{ 'controller' => "events" }] }, { :path => '/', :method => :get})
       assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["http://pinds.com"] }, { :path => '/test', :method => :get})
       assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["newurl", {'permanent' => true}] }, { :path => '/oldurl', :method => :get})
+      assert_recognizes({ :controller => "redirect_routing", :action => "redirect", :args => ["newurl", {'permanent' => true}], :id => 2 }, { :path => '/oldurl/2', :method => :get})
     end
   end
   
